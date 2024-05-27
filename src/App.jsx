@@ -38,13 +38,12 @@ function App() {
   useEffect(() => {
     const handleScroll = () => {
       if (
-        window.innerHeight + document.documentElement.scrollTop !==
-          document.documentElement.offsetHeight ||
-        isLoading
+        window.innerHeight + document.documentElement.scrollTop >=
+          document.documentElement.offsetHeight &&
+        !isLoading
       ) {
-        return;
+        setPagina((prevPage) => prevPage + 1);
       }
-      setPagina((prevPage) => prevPage + 1);
     };
 
     window.addEventListener("scroll", handleScroll);
