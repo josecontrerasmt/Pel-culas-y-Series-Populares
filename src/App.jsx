@@ -38,7 +38,7 @@ function App() {
   useEffect(() => {
     const handleScroll = () => {
       if (
-        window.innerHeight + document.documentElement.scrollTop + 5 >=
+        window.innerHeight + document.documentElement.scrollTop + 10 >=
           document.documentElement.offsetHeight &&
         !isLoading
       ) {
