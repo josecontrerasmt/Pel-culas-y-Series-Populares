@@ -235,7 +235,7 @@ function App() {
           btnContainer={btnContainer}
         />
         <h1 className={`${title==='Populares'?'hidden':'visible'} text-center text-3xl font-bold text-red-500 mt-6 lg:mt-0`}>{title}</h1>
-        <section className="mt-8">
+        <section className="mt-8 mb-12">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-8 items-start text-center">
             {dataPopular &&
               dataPopular.map((popular) => {
