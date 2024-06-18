@@ -1,14 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useEffect } from "react";
 import Loader from "./Loader";
+import AppContext from "../context/AppContext";
+import { Link } from "react-router-dom";
 
-export default function Generos({
-  menuGenero,
-  dataOption,
-  search,
-  elegirGenero,
-  btnContainer
-}) {
+export default function Generos() {
+  const { dataOption,updateGenero,setUpdateGenero,setPageGen,setMenuMobile } = useContext(AppContext);
+
   const [isLoadingGen, setIsLoadingGen] = useState(true);
   const [generos, setGeneros] = useState([]);
 
@@ -23,7 +21,7 @@ export default function Generos({
     };
     try {
       const res = await fetch(
-        `https://api.themoviedb.org/3/genre/${dataOption}/list?language=es`,
+        `https://api.themoviedb.org/3/genre/${dataOption}/list?language=es-MX`,
         options
       );
       if (!res.ok) return;
@@ -41,35 +39,25 @@ export default function Generos({
   };
   useEffect(() => {
     cargarGeneros();
-  }, [dataOption,search]);
+  }, [dataOption]);
 
   return (
-    <div
-      className={`w-full md:w-[40%] lg:w-full bg-[#130F16] fixed lg:static lg:bg-transparent top-0 bottom-0 ${
-        menuGenero ? "left-0" : "-left-full"
-      } z-40 p-8 flex flex-col gap-8 transition-all`}
-    >
-      <h1 className="text-center text-3xl font-semibold lg:hidden">Géneros</h1>
-      <div
-        ref={btnContainer}
-        className="grid grid-cols-2 gap-x-5 gap-y-3 lg:flex lg:flex-wrap lg:gap-3 lg:justify-center"
-      >
-        {isLoadingGen? (
-          <Loader />
-        ) : (
-          generos.map((genero) => (
-            <button
-              onClick={(e) => elegirGenero(e,genero)}
-              className="bg-[#2C2A32] py-2 rounded-lg lg:text-sm font-bold lg:px-3 lg:py-1
-              border-2 border-transparent hover:border-red-600 duration-300"
-              id={genero.id} 
-              key={genero.id}
-            >
-              {genero.name}
-            </button>
-          ))
-        )}
-      </div>
-    </div>
+    <>
+      {isLoadingGen ? (
+        <Loader />
+      ) : (
+        <div className="font-bold flex flex-col gap-2">
+          {generos.map((genero) => (
+            <Link onClick={()=>{
+              setUpdateGenero(!updateGenero)
+              setPageGen(1)
+              setMenuMobile(false)
+            }} key={genero.id} className="hover:text-black hover:bg-white transition-all p-2  md:text-sm text-lg  rounded-sm " to={`/${dataOption}/${genero.name}/${genero.id}`}>
+            {genero.name}
+            </Link>
+          ))}
+        </div>
+      )}
+    </>
   );
 }

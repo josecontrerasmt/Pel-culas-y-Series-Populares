@@ -1,34 +1,27 @@
-export default function PeliculaCard({
-  popular,
-  listPelicula,
-  setMenuWatch,
-  setDatoId,
-  setLoadingWatch
-}) {
+import { Link } from "react-router-dom";
+import { useContext } from "react";
+import AppContext from "../context/AppContext";
+
+export default function PeliculaCard({ item }) {
+  const { dataOption } = useContext(AppContext);
   return (
-    <div
-     onClick={() => setDatoId(popular.id)}
-      className="flex justify-between items-center flex-wrap flex-col rounded-md relative cursor-pointer"
-    >
-      <img
-        className="rounded-md w-full h-[240px] md:h-[300px] object-cover"
-        src={`https://image.tmdb.org/t/p/w200/${popular.poster_path}`}
-        alt={popular.title || popular.name}
-      />
-      {/* <h3 className="text-base font-semibold px-4 pt-1 pb-2">
-        {popular.title || popular.name}
-      </h3> */}
-        <button
-          className="absolute top-0 right-0 text-xl text-white bg-[#000000e0] pt-1 px-2 pb-2 rounded-bl-xl"
-          onClick={(e) => {
-            e.stopPropagation()
-            setMenuWatch(true);
-            setLoadingWatch(true)
-            listPelicula(popular.id, true);
-          }}
-        >
-          <i className="bi bi-plus-square-fill"></i>
-        </button>
+    <div className="group rounded-md relative">
+      <Link to={`/${dataOption}/${item.id}`}>
+        <img
+          className="rounded-md w-full h-[280px] object-cover"
+          src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
+          alt={item.title || item.name}
+        />
+      </Link>
+      <div className="absolute bottom-0 w-full p-2 bg-[#000000cb] lg:opacity-0 lg:group-hover:opacity-100 transition-opacity md:opacity-100">
+        <h1 className="text-center lg:font-bold md:font-semibold md:text-sm">{item.title || item.name}</h1>
+        <div className=" flex justify-center lg:gap-2 md:gap-1 items-center ">
+          <i className="bi bi-star-fill text-[#ffd700]"></i>
+          <span className="font-bold">
+            {Math.round(item.vote_average * 10) / 10}
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
